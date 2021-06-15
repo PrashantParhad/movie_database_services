@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.TextCriteria;
+import org.springframework.data.mongodb.core.query.TextQuery;
 import org.springframework.stereotype.Service;
 
 import com.movie.moviedata.modal.Movie;
@@ -17,8 +19,9 @@ public class SearchResultService {
 	private MongoTemplate mongoTemplate;
 	
 	public List<Movie> getTitle(String param) {
-		Query query = new Query();
-		query.addCriteria(Criteria.where("title").is(param));
+		//text search
+		TextCriteria criteria = TextCriteria.forDefaultLanguage().matchingAny(param);
+		Query query = TextQuery.queryText(criteria);
 		List<Movie> result = mongoTemplate.find(query, Movie.class);
 		return result;
 	}
@@ -40,6 +43,7 @@ public class SearchResultService {
 	public List<Movie> getTrending() {
 		Query query = new Query();
 		query.addCriteria(Criteria.where("imdbRating").gt("8"));
+		query.limit(5);
 		List<Movie> result = mongoTemplate.find(query, Movie.class);
 		return result;
 	}

@@ -1,6 +1,7 @@
 package com.movie.moviedata.modal;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.TextIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
@@ -13,8 +14,9 @@ import lombok.Data;
 public class Movie {
 	@Id
 	private String id;
+	@TextIndexed
 	private String title;
-	private String year;
+	private int year;
 	private String[] genres;
 	private String posterurl;
 	private String releaseDate;
@@ -22,6 +24,7 @@ public class Movie {
 	private String[] actors;
 	private String imdbRating;
 	private String duration;
+	private String trailerUrl;
 	
 	public String getId() {
 		return id;
@@ -35,10 +38,10 @@ public class Movie {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public String getYear() {
+	public int getYear() {
 		return year;
 	}
-	public void setYear(String year) {
+	public void setYear(int year) {
 		this.year = year;
 	}
 	public String[] getGenres() {
@@ -83,6 +86,14 @@ public class Movie {
 	public void setDuration(String duration) {
 		this.duration = duration;
 	}
+	public String getTrailerUrl() {
+		return trailerUrl;
+	}
+	public void setTrailerUrl(String trailerUrl) {
+		this.trailerUrl = trailerUrl;
+	}
+	
+	
 	
 	
 	

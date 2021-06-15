@@ -1,7 +1,12 @@
 package com.movie.moviedata.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Calendar;
 import java.util.Optional;
+
 
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +37,16 @@ public class MovieService {
 		return movieRepository.findAll();
 	}
 	
-	public Document addMovie(Movie movieInput) {
+	
+	public Document addMovie(Movie movieInput) throws ParseException {
 		
+		String releaseDate = movieInput.getReleaseDate();
+		Date dateFormatted = new SimpleDateFormat("yyyy-mm-dd").parse(releaseDate);
+		Calendar c = Calendar.getInstance();
+		c.setTime(dateFormatted);
+		int year =c.get(Calendar.YEAR);
+		
+		movieInput.setYear(year);
 		Movie result = mongoTemplate.save(movieInput);
 		Document resultDoc = new Document();
 		resultDoc.append("id", result.getId());
